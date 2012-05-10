@@ -1,0 +1,45 @@
+﻿{
+module Lexer
+open System
+open Parser
+open Microsoft.FSharp.Text.Lexing
+
+let lexeme = LexBuffer<_>.LexemeString
+}
+
+// These are some regular expression definitions
+let nmstart = ['_''a'-'z''A'-'Z']
+let nmchar = ['_''a'-'z''A'-'Z''0'-'9''-']
+let ident = ['-']? nmstart nmchar*
+let name = nmchar+
+let num = ['0'-'9']+|['0'-'9']*'.'['0'-'9']+
+let string1 = '"'[^'\n''\r''\"']*'"'
+let string2 = '\''[^'\n''\r''\'']*'\''
+let string = string1|string2
+
+let w = [' ''\t''\r''\n']*
+let N = ['N''n']
+let O = ['O''o']
+let T = ['T''t']
+
+rule tokenize = parse
+| ident					{ IDENT (Convert.ToString(lexeme lexbuf)) }
+| '#'					{ HASH }
+| '.' 					{ DOT }
+| '*' 					{ STAR }
+| w '+'	w				{ PLUS }
+| w '>' w				{ GREATER }
+| w ',' w				{ COMMA }
+| w+					{ S }
+
+
+//| "~="					{ INCLUDES }
+//| "|="					{ DASHMATCH }
+//| "^="					{ PREFIXMATCH }
+//| "$="					{ SUFFIXMATCH }
+//| "*="					{ SUBSTRINGMATCH }
+//| string				{ STRING }
+//| ident '('			{ FUNCTION }
+//| num					{ NUMBER }
+//| w '~'				{ TILDE }
+//| ':' N O T '('		{ NOT }

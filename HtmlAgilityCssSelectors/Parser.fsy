@@ -1,0 +1,69 @@
+﻿%{
+
+open Ast
+
+%}
+
+// The start token becomes a parser function in the compiled code:
+%start start
+
+// These are the terminal tokens of the grammar along with the types of
+// the data carried by each token:
+//%token <System.String> STRING
+//%token <System.String> FUNCTION
+//%token <System.Int32> NUMBER
+//%token DASHMATCH 
+//%token PREFIXMATCH
+//%token SUFFIXMATCH
+//%token SUBSTRINGMATCH
+//%token INCLUDES 
+//%token TILDE
+//%token NOT
+
+
+%token S
+%token PLUS
+%token GREATER
+%token COMMA
+%token DOT
+%token HASH
+%token STAR
+
+%token <System.String> IDENT
+
+
+
+
+// This is the type of the data produced by a successful reduction of the 'start'
+// symbol:
+%type < Ast.simpleSelectorSeq > start
+
+%%
+
+// These are the rules of the grammar along with the F# code of the 
+// actions executed as rules are reduced.  In this case the actions 
+// produce data using F# data construction terms.
+start: Init								{ $1 }
+
+
+
+Init: SimpleSelectorSeq					{ Ast.SimpleSelectorSeq (List.rev $1) }
+
+//TODO!
+Selector:
+	| SimpleSelectorSeq							{ Ast.Selector $1 }
+	| Selector Combinator SimpleSelectorSeq		{ Ast.SelectorSequence $1 $2 $3 }
+
+SimpleSelectorSeq:		
+	| SimpleSelector						{ [$1] }
+	| SimpleSelectorSeq SimpleSelector		{ $2 :: $1 }
+
+SimpleSelector:
+	| STAR				{ Ast.Global }
+	| IDENT				{ Ast.Tag($1) }
+	| DOT IDENT			{ Ast.Class($2) }
+	| HASH IDENT		{ Ast.Id($2) }
+
+Combinator:
+	| GREATER			{ Ast.Child }
+	| S					{ Ast.Descendant }
