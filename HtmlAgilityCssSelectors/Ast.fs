@@ -39,6 +39,12 @@ open System
 type combinator = 
     | Descendant 
     | Child
+    | Sibling
+
+
+type attributeComparison = 
+    | Equals
+    | Similar
 
 
 type simpleSelectors = 
@@ -46,6 +52,8 @@ type simpleSelectors =
     | Tag of string
     | Class of string
     | Id of string
+    | Attribute of string
+    | AttributeComparsion of string * attributeComparison * string
 
 type simpleSelectorSeq = 
     | SimpleSelectorSeq of simpleSelectors list

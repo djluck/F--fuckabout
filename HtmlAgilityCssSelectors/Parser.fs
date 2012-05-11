@@ -13,6 +13,11 @@ open Ast
 // This type is the type of tokens accepted by the parser
 type token = 
   | IDENT of (System.String)
+  | SINGLEQOUTE
+  | EQUALS
+  | RBRACKET
+  | LBRACKET
+  | EOF
   | STAR
   | HASH
   | DOT
@@ -23,6 +28,11 @@ type token =
 // This type is used to give symbolic names to token indexes, useful for error messages
 type tokenId = 
     | TOKEN_IDENT
+    | TOKEN_SINGLEQOUTE
+    | TOKEN_EQUALS
+    | TOKEN_RBRACKET
+    | TOKEN_LBRACKET
+    | TOKEN_EOF
     | TOKEN_STAR
     | TOKEN_HASH
     | TOKEN_DOT
@@ -42,33 +52,45 @@ type nonTerminalId =
     | NONTERM_FullSimpleSelectorSeq
     | NONTERM_SimpleSelectorSeq
     | NONTERM_SimpleSelector
+    | NONTERM_AttributeValue
+    | NONTERM_AttributeComparison
     | NONTERM_Combinator
 
 // This function maps tokens to integers indexes
 let tagOfToken (t:token) = 
   match t with
   | IDENT _ -> 0 
-  | STAR  -> 1 
-  | HASH  -> 2 
-  | DOT  -> 3 
-  | COMMA  -> 4 
-  | GREATER  -> 5 
-  | PLUS  -> 6 
-  | S  -> 7 
+  | SINGLEQOUTE  -> 1 
+  | EQUALS  -> 2 
+  | RBRACKET  -> 3 
+  | LBRACKET  -> 4 
+  | EOF  -> 5 
+  | STAR  -> 6 
+  | HASH  -> 7 
+  | DOT  -> 8 
+  | COMMA  -> 9 
+  | GREATER  -> 10 
+  | PLUS  -> 11 
+  | S  -> 12 
 
 // This function maps integers indexes to symbolic token ids
 let tokenTagToTokenId (tokenIdx:int) = 
   match tokenIdx with
   | 0 -> TOKEN_IDENT 
-  | 1 -> TOKEN_STAR 
-  | 2 -> TOKEN_HASH 
-  | 3 -> TOKEN_DOT 
-  | 4 -> TOKEN_COMMA 
-  | 5 -> TOKEN_GREATER 
-  | 6 -> TOKEN_PLUS 
-  | 7 -> TOKEN_S 
-  | 10 -> TOKEN_end_of_input
-  | 8 -> TOKEN_error
+  | 1 -> TOKEN_SINGLEQOUTE 
+  | 2 -> TOKEN_EQUALS 
+  | 3 -> TOKEN_RBRACKET 
+  | 4 -> TOKEN_LBRACKET 
+  | 5 -> TOKEN_EOF 
+  | 6 -> TOKEN_STAR 
+  | 7 -> TOKEN_HASH 
+  | 8 -> TOKEN_DOT 
+  | 9 -> TOKEN_COMMA 
+  | 10 -> TOKEN_GREATER 
+  | 11 -> TOKEN_PLUS 
+  | 12 -> TOKEN_S 
+  | 15 -> TOKEN_end_of_input
+  | 13 -> TOKEN_error
   | _ -> failwith "tokenTagToTokenId: bad token"
 
 /// This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
@@ -88,17 +110,27 @@ let prodIdxToNonTerminal (prodIdx:int) =
     | 11 -> NONTERM_SimpleSelector 
     | 12 -> NONTERM_SimpleSelector 
     | 13 -> NONTERM_SimpleSelector 
-    | 14 -> NONTERM_Combinator 
-    | 15 -> NONTERM_Combinator 
+    | 14 -> NONTERM_SimpleSelector 
+    | 15 -> NONTERM_SimpleSelector 
+    | 16 -> NONTERM_AttributeValue 
+    | 17 -> NONTERM_AttributeComparison 
+    | 18 -> NONTERM_Combinator 
+    | 19 -> NONTERM_Combinator 
+    | 20 -> NONTERM_Combinator 
     | _ -> failwith "prodIdxToNonTerminal: bad production index"
 
-let _fsyacc_endOfInputTag = 10 
-let _fsyacc_tagOfErrorTerminal = 8
+let _fsyacc_endOfInputTag = 15 
+let _fsyacc_tagOfErrorTerminal = 13
 
 // This function gets the name of a token as a string
 let token_to_string (t:token) = 
   match t with 
   | IDENT _ -> "IDENT" 
+  | SINGLEQOUTE  -> "SINGLEQOUTE" 
+  | EQUALS  -> "EQUALS" 
+  | RBRACKET  -> "RBRACKET" 
+  | LBRACKET  -> "LBRACKET" 
+  | EOF  -> "EOF" 
   | STAR  -> "STAR" 
   | HASH  -> "HASH" 
   | DOT  -> "DOT" 
@@ -111,6 +143,11 @@ let token_to_string (t:token) =
 let _fsyacc_dataOfToken (t:token) = 
   match t with 
   | IDENT _fsyacc_x -> Microsoft.FSharp.Core.Operators.box _fsyacc_x 
+  | SINGLEQOUTE  -> (null : System.Object) 
+  | EQUALS  -> (null : System.Object) 
+  | RBRACKET  -> (null : System.Object) 
+  | LBRACKET  -> (null : System.Object) 
+  | EOF  -> (null : System.Object) 
   | STAR  -> (null : System.Object) 
   | HASH  -> (null : System.Object) 
   | DOT  -> (null : System.Object) 
@@ -118,18 +155,18 @@ let _fsyacc_dataOfToken (t:token) =
   | GREATER  -> (null : System.Object) 
   | PLUS  -> (null : System.Object) 
   | S  -> (null : System.Object) 
-let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 1us; 65535us; 0us; 2us; 1us; 65535us; 0us; 3us; 3us; 65535us; 0us; 4us; 5us; 6us; 8us; 9us; 3us; 65535us; 0us; 7us; 5us; 7us; 8us; 7us; 3us; 65535us; 0us; 10us; 5us; 10us; 8us; 10us; 4us; 65535us; 0us; 11us; 5us; 11us; 8us; 11us; 10us; 12us; 1us; 65535us; 7us; 8us; |]
-let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 5us; 7us; 11us; 15us; 19us; 24us; |]
-let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 1us; 1us; 2us; 2us; 4us; 1us; 3us; 1us; 4us; 1us; 4us; 2us; 5us; 6us; 1us; 6us; 1us; 6us; 2us; 7us; 9us; 1us; 8us; 1us; 9us; 1us; 10us; 1us; 11us; 1us; 12us; 1us; 12us; 1us; 13us; 1us; 13us; 1us; 14us; 1us; 15us; |]
-let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 6us; 9us; 11us; 13us; 15us; 18us; 20us; 22us; 25us; 27us; 29us; 31us; 33us; 35us; 37us; 39us; 41us; 43us; |]
-let _fsyacc_action_rows = 21
-let _fsyacc_actionTableElements = [|4us; 32768us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 49152us; 0us; 16385us; 1us; 16386us; 4us; 5us; 0us; 16387us; 4us; 32768us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 16388us; 2us; 16389us; 5us; 19us; 7us; 20us; 4us; 32768us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 16390us; 4us; 16391us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 16392us; 0us; 16393us; 0us; 16394us; 0us; 16395us; 1us; 32768us; 0us; 16us; 0us; 16396us; 1us; 32768us; 0us; 18us; 0us; 16397us; 0us; 16398us; 0us; 16399us; |]
-let _fsyacc_actionTableRowOffsets = [|0us; 5us; 6us; 7us; 9us; 10us; 15us; 16us; 19us; 24us; 25us; 30us; 31us; 32us; 33us; 34us; 36us; 37us; 39us; 40us; 41us; |]
-let _fsyacc_reductionSymbolCounts = [|1us; 1us; 1us; 1us; 3us; 1us; 3us; 1us; 1us; 2us; 1us; 1us; 2us; 2us; 1us; 1us; |]
-let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 3us; 3us; 4us; 4us; 5us; 6us; 6us; 7us; 7us; 7us; 7us; 8us; 8us; |]
-let _fsyacc_immediateActions = [|65535us; 49152us; 16385us; 65535us; 16387us; 65535us; 16388us; 65535us; 65535us; 16390us; 65535us; 16392us; 16393us; 16394us; 16395us; 65535us; 16396us; 65535us; 16397us; 16398us; 16399us; |]
+let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 1us; 65535us; 0us; 2us; 1us; 65535us; 0us; 3us; 3us; 65535us; 0us; 5us; 6us; 7us; 9us; 10us; 3us; 65535us; 0us; 8us; 6us; 8us; 9us; 8us; 3us; 65535us; 0us; 11us; 6us; 11us; 9us; 11us; 4us; 65535us; 0us; 12us; 6us; 12us; 9us; 12us; 11us; 13us; 1us; 65535us; 23us; 24us; 1us; 65535us; 21us; 23us; 1us; 65535us; 8us; 9us; |]
+let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 5us; 7us; 11us; 15us; 19us; 24us; 26us; 28us; |]
+let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 1us; 1us; 2us; 2us; 4us; 1us; 2us; 1us; 3us; 1us; 4us; 1us; 4us; 2us; 5us; 6us; 1us; 6us; 1us; 6us; 2us; 7us; 9us; 1us; 8us; 1us; 9us; 1us; 10us; 1us; 11us; 1us; 12us; 1us; 12us; 1us; 13us; 1us; 13us; 2us; 14us; 15us; 2us; 14us; 15us; 1us; 14us; 1us; 15us; 1us; 15us; 1us; 15us; 1us; 16us; 1us; 16us; 1us; 16us; 1us; 17us; 1us; 18us; 1us; 19us; 1us; 20us; |]
+let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 6us; 9us; 11us; 13us; 15us; 17us; 20us; 22us; 24us; 27us; 29us; 31us; 33us; 35us; 37us; 39us; 41us; 43us; 46us; 49us; 51us; 53us; 55us; 57us; 59us; 61us; 63us; 65us; 67us; 69us; |]
+let _fsyacc_action_rows = 33
+let _fsyacc_actionTableElements = [|5us; 32768us; 0us; 15us; 4us; 20us; 6us; 14us; 7us; 18us; 8us; 16us; 0us; 49152us; 0us; 16385us; 2us; 32768us; 5us; 4us; 9us; 6us; 0us; 16386us; 0us; 16387us; 5us; 32768us; 0us; 15us; 4us; 20us; 6us; 14us; 7us; 18us; 8us; 16us; 0us; 16388us; 3us; 16389us; 10us; 30us; 11us; 32us; 12us; 31us; 5us; 32768us; 0us; 15us; 4us; 20us; 6us; 14us; 7us; 18us; 8us; 16us; 0us; 16390us; 5us; 16391us; 0us; 15us; 4us; 20us; 6us; 14us; 7us; 18us; 8us; 16us; 0us; 16392us; 0us; 16393us; 0us; 16394us; 0us; 16395us; 1us; 32768us; 0us; 17us; 0us; 16396us; 1us; 32768us; 0us; 19us; 0us; 16397us; 1us; 32768us; 0us; 21us; 2us; 32768us; 2us; 29us; 3us; 22us; 0us; 16398us; 1us; 32768us; 1us; 26us; 1us; 32768us; 3us; 25us; 0us; 16399us; 1us; 32768us; 0us; 27us; 1us; 32768us; 1us; 28us; 0us; 16400us; 0us; 16401us; 0us; 16402us; 0us; 16403us; 0us; 16404us; |]
+let _fsyacc_actionTableRowOffsets = [|0us; 6us; 7us; 8us; 11us; 12us; 13us; 19us; 20us; 24us; 30us; 31us; 37us; 38us; 39us; 40us; 41us; 43us; 44us; 46us; 47us; 49us; 52us; 53us; 55us; 57us; 58us; 60us; 62us; 63us; 64us; 65us; 66us; |]
+let _fsyacc_reductionSymbolCounts = [|1us; 1us; 2us; 1us; 3us; 1us; 3us; 1us; 1us; 2us; 1us; 1us; 2us; 2us; 3us; 5us; 3us; 1us; 1us; 1us; 1us; |]
+let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 3us; 3us; 4us; 4us; 5us; 6us; 6us; 7us; 7us; 7us; 7us; 7us; 7us; 8us; 9us; 10us; 10us; 10us; |]
+let _fsyacc_immediateActions = [|65535us; 49152us; 16385us; 65535us; 16386us; 16387us; 65535us; 16388us; 65535us; 65535us; 16390us; 65535us; 16392us; 16393us; 16394us; 16395us; 65535us; 16396us; 65535us; 16397us; 65535us; 65535us; 16398us; 65535us; 65535us; 16399us; 65535us; 65535us; 16400us; 16401us; 16402us; 16403us; 16404us; |]
 let _fsyacc_reductions ()  =    [| 
-# 132 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 169 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data :  Ast.selectorsGroup )) in
             Microsoft.FSharp.Core.Operators.box
@@ -138,63 +175,63 @@ let _fsyacc_reductions ()  =    [|
                       raise (Microsoft.FSharp.Text.Parsing.Accept(Microsoft.FSharp.Core.Operators.box _1))
                    )
                  : '_startstart));
-# 141 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 178 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Init)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 46 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 51 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                           _1 
                    )
-# 46 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 51 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  :  Ast.selectorsGroup ));
-# 152 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 189 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SelectorsGroup)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 48 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
-                                                Ast.SelectorsGroup (List.rev _1) 
+# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                   Ast.SelectorsGroup (List.rev _1) 
                    )
-# 48 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'Init));
-# 163 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 200 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Selector)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 52 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 57 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                          [_1] 
                    )
-# 52 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 57 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SelectorsGroup));
-# 174 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 211 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SelectorsGroup)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Selector)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 58 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                                          _3 :: _1 
                    )
-# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 58 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SelectorsGroup));
-# 186 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 223 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'FullSimpleSelectorSeq)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 56 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 61 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                                         Ast.Selector _1 
                    )
-# 56 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 61 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'Selector));
-# 197 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 234 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'FullSimpleSelectorSeq)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'Combinator)) in
@@ -202,110 +239,165 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 57 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                                                        Ast.SelectorSequence (_1, _2, _3) 
                    )
-# 57 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'Selector));
-# 210 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 247 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelectorSeq)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 59 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 64 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                                                 Ast.SimpleSelectorSeq (List.rev _1) 
                    )
-# 59 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 64 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'FullSimpleSelectorSeq));
-# 221 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 258 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelector)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 67 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                               [_1] 
                    )
-# 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 67 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelectorSeq));
-# 232 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 269 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelectorSeq)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelector)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 63 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                                             _2 :: _1 
                    )
-# 63 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelectorSeq));
-# 244 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 281 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 66 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 71 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                   Ast.Global 
                    )
-# 66 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 71 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 254 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 291 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 67 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 72 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                    Ast.Tag(_1) 
                    )
-# 67 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 72 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 265 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 302 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                       Ast.Class(_2) 
                    )
-# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 276 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 313 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 69 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 74 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                       Ast.Id(_2) 
                    )
-# 69 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 74 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 287 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 324 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 75 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                  Ast.Attribute(_2) 
+                   )
+# 75 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'SimpleSelector));
+# 335 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'AttributeComparison)) in
+            let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'AttributeValue)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 76 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                                                     Ast.AttributeComparsion (_2, _3, _4) 
+                   )
+# 76 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'SimpleSelector));
+# 348 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 79 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                        _2 
+                   )
+# 79 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'AttributeValue));
+# 359 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 72 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 82 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                   Ast.Equals 
+                   )
+# 82 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'AttributeComparison));
+# 369 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 85 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                     Ast.Child 
                    )
-# 72 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 85 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'Combinator));
-# 297 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 379 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 86 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                 Ast.Descendant 
                    )
-# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+# 86 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'Combinator));
+# 389 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 87 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                  Ast.Sibling 
+                   )
+# 87 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'Combinator));
 |]
-# 308 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+# 400 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 
   { reductions= _fsyacc_reductions ();
     endOfInputTag = _fsyacc_endOfInputTag;
@@ -324,7 +416,7 @@ let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> =
                               match parse_error_rich with 
                               | Some f -> f ctxt
                               | None -> parse_error ctxt.Message);
-    numTerminals = 11;
+    numTerminals = 16;
     productionToNonTerminalTable = _fsyacc_productionToNonTerminalTable  }
 let engine lexer lexbuf startState = (tables ()).Interpret(lexer, lexbuf, startState)
 let start lexer lexbuf :  Ast.selectorsGroup  =

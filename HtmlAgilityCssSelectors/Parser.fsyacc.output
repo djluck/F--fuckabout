@@ -6,10 +6,15 @@ state 0:
     _startstart ->  . start
 
   actions:
-    action 'IDENT' (noprec):   shift 14
-    action 'STAR' (noprec):   shift 13
-    action 'HASH' (noprec):   shift 17
-    action 'DOT' (noprec):   shift 15
+    action 'IDENT' (noprec):   shift 15
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   shift 20
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   shift 14
+    action 'HASH' (noprec):   shift 18
+    action 'DOT' (noprec):   shift 16
     action 'COMMA' (noprec):   error
     action 'GREATER' (noprec):   error
     action 'PLUS' (noprec):   error
@@ -23,10 +28,10 @@ state 0:
     goto start: 1
     goto Init: 2
     goto SelectorsGroup: 3
-    goto Selector: 4
-    goto FullSimpleSelectorSeq: 7
-    goto SimpleSelectorSeq: 10
-    goto SimpleSelector: 11
+    goto Selector: 5
+    goto FullSimpleSelectorSeq: 8
+    goto SimpleSelectorSeq: 11
+    goto SimpleSelector: 12
 
 state 1:
   items:
@@ -34,6 +39,11 @@ state 1:
 
   actions:
     action 'IDENT' (noprec):   accept
+    action 'SINGLEQOUTE' (noprec):   accept
+    action 'EQUALS' (noprec):   accept
+    action 'RBRACKET' (noprec):   accept
+    action 'LBRACKET' (noprec):   accept
+    action 'EOF' (noprec):   accept
     action 'STAR' (noprec):   accept
     action 'HASH' (noprec):   accept
     action 'DOT' (noprec):   accept
@@ -54,6 +64,11 @@ state 2:
 
   actions:
     action 'IDENT' (noprec):   reduce start --> Init
+    action 'SINGLEQOUTE' (noprec):   reduce start --> Init
+    action 'EQUALS' (noprec):   reduce start --> Init
+    action 'RBRACKET' (noprec):   reduce start --> Init
+    action 'LBRACKET' (noprec):   reduce start --> Init
+    action 'EOF' (noprec):   reduce start --> Init
     action 'STAR' (noprec):   reduce start --> Init
     action 'HASH' (noprec):   reduce start --> Init
     action 'DOT' (noprec):   reduce start --> Init
@@ -70,31 +85,66 @@ state 2:
 
 state 3:
   items:
-    Init -> SelectorsGroup . 
+    Init -> SelectorsGroup . 'EOF'
     SelectorsGroup -> SelectorsGroup . 'COMMA' Selector
 
   actions:
-    action 'IDENT' (noprec):   reduce Init --> SelectorsGroup
-    action 'STAR' (noprec):   reduce Init --> SelectorsGroup
-    action 'HASH' (noprec):   reduce Init --> SelectorsGroup
-    action 'DOT' (noprec):   reduce Init --> SelectorsGroup
-    action 'COMMA' (noprec):   shift 5
-    action 'GREATER' (noprec):   reduce Init --> SelectorsGroup
-    action 'PLUS' (noprec):   reduce Init --> SelectorsGroup
-    action 'S' (noprec):   reduce Init --> SelectorsGroup
-    action 'error' (noprec):   reduce Init --> SelectorsGroup
-    action '#' (noprec):   reduce Init --> SelectorsGroup
-    action '$$' (noprec):   reduce Init --> SelectorsGroup
+    action 'IDENT' (noprec):   error
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   shift 4
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   shift 6
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
 
   immediate action: <none>
  gotos:
 
 state 4:
   items:
+    Init -> SelectorsGroup 'EOF' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'SINGLEQOUTE' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'EQUALS' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'RBRACKET' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'LBRACKET' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'EOF' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'STAR' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'HASH' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'DOT' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'COMMA' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'GREATER' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'PLUS' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'S' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action 'error' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action '#' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+    action '$$' (noprec):   reduce Init --> SelectorsGroup 'EOF'
+
+  immediate action:   reduce Init --> SelectorsGroup 'EOF'
+ gotos:
+
+state 5:
+  items:
     SelectorsGroup -> Selector . 
 
   actions:
     action 'IDENT' (noprec):   reduce SelectorsGroup --> Selector
+    action 'SINGLEQOUTE' (noprec):   reduce SelectorsGroup --> Selector
+    action 'EQUALS' (noprec):   reduce SelectorsGroup --> Selector
+    action 'RBRACKET' (noprec):   reduce SelectorsGroup --> Selector
+    action 'LBRACKET' (noprec):   reduce SelectorsGroup --> Selector
+    action 'EOF' (noprec):   reduce SelectorsGroup --> Selector
     action 'STAR' (noprec):   reduce SelectorsGroup --> Selector
     action 'HASH' (noprec):   reduce SelectorsGroup --> Selector
     action 'DOT' (noprec):   reduce SelectorsGroup --> Selector
@@ -109,15 +159,20 @@ state 4:
   immediate action:   reduce SelectorsGroup --> Selector
  gotos:
 
-state 5:
+state 6:
   items:
     SelectorsGroup -> SelectorsGroup 'COMMA' . Selector
 
   actions:
-    action 'IDENT' (noprec):   shift 14
-    action 'STAR' (noprec):   shift 13
-    action 'HASH' (noprec):   shift 17
-    action 'DOT' (noprec):   shift 15
+    action 'IDENT' (noprec):   shift 15
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   shift 20
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   shift 14
+    action 'HASH' (noprec):   shift 18
+    action 'DOT' (noprec):   shift 16
     action 'COMMA' (noprec):   error
     action 'GREATER' (noprec):   error
     action 'PLUS' (noprec):   error
@@ -128,17 +183,22 @@ state 5:
 
   immediate action: <none>
  gotos:
-    goto Selector: 6
-    goto FullSimpleSelectorSeq: 7
-    goto SimpleSelectorSeq: 10
-    goto SimpleSelector: 11
+    goto Selector: 7
+    goto FullSimpleSelectorSeq: 8
+    goto SimpleSelectorSeq: 11
+    goto SimpleSelector: 12
 
-state 6:
+state 7:
   items:
     SelectorsGroup -> SelectorsGroup 'COMMA' Selector . 
 
   actions:
     action 'IDENT' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'SINGLEQOUTE' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'EQUALS' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'RBRACKET' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'LBRACKET' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'EOF' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
     action 'STAR' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
     action 'HASH' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
     action 'DOT' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
@@ -153,37 +213,47 @@ state 6:
   immediate action:   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
  gotos:
 
-state 7:
+state 8:
   items:
     Selector -> FullSimpleSelectorSeq . 
     Selector -> FullSimpleSelectorSeq . Combinator Selector
 
   actions:
     action 'IDENT' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'SINGLEQOUTE' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'EQUALS' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'RBRACKET' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'LBRACKET' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'EOF' (noprec):   reduce Selector --> FullSimpleSelectorSeq
     action 'STAR' (noprec):   reduce Selector --> FullSimpleSelectorSeq
     action 'HASH' (noprec):   reduce Selector --> FullSimpleSelectorSeq
     action 'DOT' (noprec):   reduce Selector --> FullSimpleSelectorSeq
     action 'COMMA' (noprec):   reduce Selector --> FullSimpleSelectorSeq
-    action 'GREATER' (noprec):   shift 19
-    action 'PLUS' (noprec):   reduce Selector --> FullSimpleSelectorSeq
-    action 'S' (noprec):   shift 20
+    action 'GREATER' (noprec):   shift 30
+    action 'PLUS' (noprec):   shift 32
+    action 'S' (noprec):   shift 31
     action 'error' (noprec):   reduce Selector --> FullSimpleSelectorSeq
     action '#' (noprec):   reduce Selector --> FullSimpleSelectorSeq
     action '$$' (noprec):   reduce Selector --> FullSimpleSelectorSeq
 
   immediate action: <none>
  gotos:
-    goto Combinator: 8
+    goto Combinator: 9
 
-state 8:
+state 9:
   items:
     Selector -> FullSimpleSelectorSeq Combinator . Selector
 
   actions:
-    action 'IDENT' (noprec):   shift 14
-    action 'STAR' (noprec):   shift 13
-    action 'HASH' (noprec):   shift 17
-    action 'DOT' (noprec):   shift 15
+    action 'IDENT' (noprec):   shift 15
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   shift 20
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   shift 14
+    action 'HASH' (noprec):   shift 18
+    action 'DOT' (noprec):   shift 16
     action 'COMMA' (noprec):   error
     action 'GREATER' (noprec):   error
     action 'PLUS' (noprec):   error
@@ -194,17 +264,22 @@ state 8:
 
   immediate action: <none>
  gotos:
-    goto Selector: 9
-    goto FullSimpleSelectorSeq: 7
-    goto SimpleSelectorSeq: 10
-    goto SimpleSelector: 11
+    goto Selector: 10
+    goto FullSimpleSelectorSeq: 8
+    goto SimpleSelectorSeq: 11
+    goto SimpleSelector: 12
 
-state 9:
+state 10:
   items:
     Selector -> FullSimpleSelectorSeq Combinator Selector . 
 
   actions:
     action 'IDENT' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'SINGLEQOUTE' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'EQUALS' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'RBRACKET' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'LBRACKET' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'EOF' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
     action 'STAR' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
     action 'HASH' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
     action 'DOT' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
@@ -219,16 +294,21 @@ state 9:
   immediate action:   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
  gotos:
 
-state 10:
+state 11:
   items:
     FullSimpleSelectorSeq -> SimpleSelectorSeq . 
     SimpleSelectorSeq -> SimpleSelectorSeq . SimpleSelector
 
   actions:
-    action 'IDENT' (noprec):   shift 14
-    action 'STAR' (noprec):   shift 13
-    action 'HASH' (noprec):   shift 17
-    action 'DOT' (noprec):   shift 15
+    action 'IDENT' (noprec):   shift 15
+    action 'SINGLEQOUTE' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'EQUALS' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'RBRACKET' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'LBRACKET' (noprec):   shift 20
+    action 'EOF' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'STAR' (noprec):   shift 14
+    action 'HASH' (noprec):   shift 18
+    action 'DOT' (noprec):   shift 16
     action 'COMMA' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
     action 'GREATER' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
     action 'PLUS' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
@@ -239,14 +319,19 @@ state 10:
 
   immediate action: <none>
  gotos:
-    goto SimpleSelector: 12
+    goto SimpleSelector: 13
 
-state 11:
+state 12:
   items:
     SimpleSelectorSeq -> SimpleSelector . 
 
   actions:
     action 'IDENT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'EQUALS' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'RBRACKET' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'LBRACKET' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'EOF' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
     action 'STAR' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
     action 'HASH' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
     action 'DOT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
@@ -261,12 +346,17 @@ state 11:
   immediate action:   reduce SimpleSelectorSeq --> SimpleSelector
  gotos:
 
-state 12:
+state 13:
   items:
     SimpleSelectorSeq -> SimpleSelectorSeq SimpleSelector . 
 
   actions:
     action 'IDENT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'EQUALS' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'RBRACKET' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'LBRACKET' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'EOF' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
     action 'STAR' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
     action 'HASH' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
     action 'DOT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
@@ -281,12 +371,17 @@ state 12:
   immediate action:   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
  gotos:
 
-state 13:
+state 14:
   items:
     SimpleSelector -> 'STAR' . 
 
   actions:
     action 'IDENT' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'EQUALS' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'RBRACKET' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'LBRACKET' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'EOF' (noprec):   reduce SimpleSelector --> 'STAR'
     action 'STAR' (noprec):   reduce SimpleSelector --> 'STAR'
     action 'HASH' (noprec):   reduce SimpleSelector --> 'STAR'
     action 'DOT' (noprec):   reduce SimpleSelector --> 'STAR'
@@ -301,12 +396,17 @@ state 13:
   immediate action:   reduce SimpleSelector --> 'STAR'
  gotos:
 
-state 14:
+state 15:
   items:
     SimpleSelector -> 'IDENT' . 
 
   actions:
     action 'IDENT' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'EQUALS' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'RBRACKET' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'LBRACKET' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'EOF' (noprec):   reduce SimpleSelector --> 'IDENT'
     action 'STAR' (noprec):   reduce SimpleSelector --> 'IDENT'
     action 'HASH' (noprec):   reduce SimpleSelector --> 'IDENT'
     action 'DOT' (noprec):   reduce SimpleSelector --> 'IDENT'
@@ -321,12 +421,17 @@ state 14:
   immediate action:   reduce SimpleSelector --> 'IDENT'
  gotos:
 
-state 15:
+state 16:
   items:
     SimpleSelector -> 'DOT' . 'IDENT'
 
   actions:
-    action 'IDENT' (noprec):   shift 16
+    action 'IDENT' (noprec):   shift 17
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
     action 'STAR' (noprec):   error
     action 'HASH' (noprec):   error
     action 'DOT' (noprec):   error
@@ -341,12 +446,17 @@ state 15:
   immediate action: <none>
  gotos:
 
-state 16:
+state 17:
   items:
     SimpleSelector -> 'DOT' 'IDENT' . 
 
   actions:
     action 'IDENT' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'EQUALS' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'RBRACKET' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'LBRACKET' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'EOF' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
     action 'STAR' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
     action 'HASH' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
     action 'DOT' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
@@ -361,12 +471,17 @@ state 16:
   immediate action:   reduce SimpleSelector --> 'DOT' 'IDENT'
  gotos:
 
-state 17:
+state 18:
   items:
     SimpleSelector -> 'HASH' . 'IDENT'
 
   actions:
-    action 'IDENT' (noprec):   shift 18
+    action 'IDENT' (noprec):   shift 19
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
     action 'STAR' (noprec):   error
     action 'HASH' (noprec):   error
     action 'DOT' (noprec):   error
@@ -381,12 +496,17 @@ state 17:
   immediate action: <none>
  gotos:
 
-state 18:
+state 19:
   items:
     SimpleSelector -> 'HASH' 'IDENT' . 
 
   actions:
     action 'IDENT' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'EQUALS' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'RBRACKET' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'LBRACKET' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'EOF' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
     action 'STAR' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
     action 'HASH' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
     action 'DOT' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
@@ -401,12 +521,271 @@ state 18:
   immediate action:   reduce SimpleSelector --> 'HASH' 'IDENT'
  gotos:
 
-state 19:
+state 20:
+  items:
+    SimpleSelector -> 'LBRACKET' . 'IDENT' 'RBRACKET'
+    SimpleSelector -> 'LBRACKET' . 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+
+  actions:
+    action 'IDENT' (noprec):   shift 21
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+
+state 21:
+  items:
+    SimpleSelector -> 'LBRACKET' 'IDENT' . 'RBRACKET'
+    SimpleSelector -> 'LBRACKET' 'IDENT' . AttributeComparison AttributeValue 'RBRACKET'
+
+  actions:
+    action 'IDENT' (noprec):   error
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   shift 29
+    action 'RBRACKET' (noprec):   shift 22
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+    goto AttributeComparison: 23
+
+state 22:
+  items:
+    SimpleSelector -> 'LBRACKET' 'IDENT' 'RBRACKET' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'EQUALS' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'RBRACKET' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'LBRACKET' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'EOF' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'STAR' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'HASH' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'DOT' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'COMMA' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'GREATER' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'PLUS' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'S' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action 'error' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action '#' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+    action '$$' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+
+  immediate action:   reduce SimpleSelector --> 'LBRACKET' 'IDENT' 'RBRACKET'
+ gotos:
+
+state 23:
+  items:
+    SimpleSelector -> 'LBRACKET' 'IDENT' AttributeComparison . AttributeValue 'RBRACKET'
+
+  actions:
+    action 'IDENT' (noprec):   error
+    action 'SINGLEQOUTE' (noprec):   shift 26
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+    goto AttributeValue: 24
+
+state 24:
+  items:
+    SimpleSelector -> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue . 'RBRACKET'
+
+  actions:
+    action 'IDENT' (noprec):   error
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   shift 25
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+
+state 25:
+  items:
+    SimpleSelector -> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'SINGLEQOUTE' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'EQUALS' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'RBRACKET' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'LBRACKET' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'EOF' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'STAR' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'HASH' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'DOT' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'COMMA' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'GREATER' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'PLUS' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'S' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action 'error' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action '#' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+    action '$$' (noprec):   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+
+  immediate action:   reduce SimpleSelector --> 'LBRACKET' 'IDENT' AttributeComparison AttributeValue 'RBRACKET'
+ gotos:
+
+state 26:
+  items:
+    AttributeValue -> 'SINGLEQOUTE' . 'IDENT' 'SINGLEQOUTE'
+
+  actions:
+    action 'IDENT' (noprec):   shift 27
+    action 'SINGLEQOUTE' (noprec):   error
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+
+state 27:
+  items:
+    AttributeValue -> 'SINGLEQOUTE' 'IDENT' . 'SINGLEQOUTE'
+
+  actions:
+    action 'IDENT' (noprec):   error
+    action 'SINGLEQOUTE' (noprec):   shift 28
+    action 'EQUALS' (noprec):   error
+    action 'RBRACKET' (noprec):   error
+    action 'LBRACKET' (noprec):   error
+    action 'EOF' (noprec):   error
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+
+state 28:
+  items:
+    AttributeValue -> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'SINGLEQOUTE' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'EQUALS' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'RBRACKET' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'LBRACKET' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'EOF' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'STAR' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'HASH' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'DOT' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'COMMA' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'GREATER' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'PLUS' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'S' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action 'error' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action '#' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+    action '$$' (noprec):   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+
+  immediate action:   reduce AttributeValue --> 'SINGLEQOUTE' 'IDENT' 'SINGLEQOUTE'
+ gotos:
+
+state 29:
+  items:
+    AttributeComparison -> 'EQUALS' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'SINGLEQOUTE' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'EQUALS' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'RBRACKET' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'LBRACKET' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'EOF' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'STAR' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'HASH' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'DOT' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'COMMA' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'GREATER' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'PLUS' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'S' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action 'error' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action '#' (noprec):   reduce AttributeComparison --> 'EQUALS'
+    action '$$' (noprec):   reduce AttributeComparison --> 'EQUALS'
+
+  immediate action:   reduce AttributeComparison --> 'EQUALS'
+ gotos:
+
+state 30:
   items:
     Combinator -> 'GREATER' . 
 
   actions:
     action 'IDENT' (noprec):   reduce Combinator --> 'GREATER'
+    action 'SINGLEQOUTE' (noprec):   reduce Combinator --> 'GREATER'
+    action 'EQUALS' (noprec):   reduce Combinator --> 'GREATER'
+    action 'RBRACKET' (noprec):   reduce Combinator --> 'GREATER'
+    action 'LBRACKET' (noprec):   reduce Combinator --> 'GREATER'
+    action 'EOF' (noprec):   reduce Combinator --> 'GREATER'
     action 'STAR' (noprec):   reduce Combinator --> 'GREATER'
     action 'HASH' (noprec):   reduce Combinator --> 'GREATER'
     action 'DOT' (noprec):   reduce Combinator --> 'GREATER'
@@ -421,12 +800,17 @@ state 19:
   immediate action:   reduce Combinator --> 'GREATER'
  gotos:
 
-state 20:
+state 31:
   items:
     Combinator -> 'S' . 
 
   actions:
     action 'IDENT' (noprec):   reduce Combinator --> 'S'
+    action 'SINGLEQOUTE' (noprec):   reduce Combinator --> 'S'
+    action 'EQUALS' (noprec):   reduce Combinator --> 'S'
+    action 'RBRACKET' (noprec):   reduce Combinator --> 'S'
+    action 'LBRACKET' (noprec):   reduce Combinator --> 'S'
+    action 'EOF' (noprec):   reduce Combinator --> 'S'
     action 'STAR' (noprec):   reduce Combinator --> 'S'
     action 'HASH' (noprec):   reduce Combinator --> 'S'
     action 'DOT' (noprec):   reduce Combinator --> 'S'
@@ -439,6 +823,31 @@ state 20:
     action '$$' (noprec):   reduce Combinator --> 'S'
 
   immediate action:   reduce Combinator --> 'S'
+ gotos:
+
+state 32:
+  items:
+    Combinator -> 'PLUS' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce Combinator --> 'PLUS'
+    action 'SINGLEQOUTE' (noprec):   reduce Combinator --> 'PLUS'
+    action 'EQUALS' (noprec):   reduce Combinator --> 'PLUS'
+    action 'RBRACKET' (noprec):   reduce Combinator --> 'PLUS'
+    action 'LBRACKET' (noprec):   reduce Combinator --> 'PLUS'
+    action 'EOF' (noprec):   reduce Combinator --> 'PLUS'
+    action 'STAR' (noprec):   reduce Combinator --> 'PLUS'
+    action 'HASH' (noprec):   reduce Combinator --> 'PLUS'
+    action 'DOT' (noprec):   reduce Combinator --> 'PLUS'
+    action 'COMMA' (noprec):   reduce Combinator --> 'PLUS'
+    action 'GREATER' (noprec):   reduce Combinator --> 'PLUS'
+    action 'PLUS' (noprec):   reduce Combinator --> 'PLUS'
+    action 'S' (noprec):   reduce Combinator --> 'PLUS'
+    action 'error' (noprec):   reduce Combinator --> 'PLUS'
+    action '#' (noprec):   reduce Combinator --> 'PLUS'
+    action '$$' (noprec):   reduce Combinator --> 'PLUS'
+
+  immediate action:   reduce Combinator --> 'PLUS'
  gotos:
 
 

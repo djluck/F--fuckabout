@@ -28,6 +28,11 @@ open Ast
 %token DOT
 %token HASH
 %token STAR
+%token EOF
+%token LBRACKET
+%token RBRACKET
+%token EQUALS
+%token SINGLEQOUTE
 
 %token <System.String> IDENT
 
@@ -45,7 +50,7 @@ open Ast
 // produce data using F# data construction terms.
 start: Init								{ $1 }
 
-Init: SelectorsGroup					{ Ast.SelectorsGroup (List.rev $1) }
+Init: SelectorsGroup EOF				{ Ast.SelectorsGroup (List.rev $1) }
 
 
 SelectorsGroup:
@@ -67,7 +72,16 @@ SimpleSelector:
 	| IDENT				{ Ast.Tag($1) }
 	| DOT IDENT			{ Ast.Class($2) }
 	| HASH IDENT		{ Ast.Id($2) }
+	| LBRACKET IDENT RBRACKET { Ast.Attribute($2) }
+	| LBRACKET IDENT AttributeComparison AttributeValue RBRACKET { Ast.AttributeComparsion ($2, $3, $4) }
+
+AttributeValue:
+	| SINGLEQOUTE IDENT SINGLEQOUTE { $2 }
+
+AttributeComparison:
+	| EQUALS			{ Ast.Equals }
 
 Combinator:
 	| GREATER			{ Ast.Child }
 	| S					{ Ast.Descendant }
+	| PLUS				{ Ast.Sibling }

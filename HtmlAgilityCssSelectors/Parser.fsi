@@ -2,6 +2,11 @@
 module Parser
 type token = 
   | IDENT of (System.String)
+  | SINGLEQOUTE
+  | EQUALS
+  | RBRACKET
+  | LBRACKET
+  | EOF
   | STAR
   | HASH
   | DOT
@@ -11,6 +16,11 @@ type token =
   | S
 type tokenId = 
     | TOKEN_IDENT
+    | TOKEN_SINGLEQOUTE
+    | TOKEN_EQUALS
+    | TOKEN_RBRACKET
+    | TOKEN_LBRACKET
+    | TOKEN_EOF
     | TOKEN_STAR
     | TOKEN_HASH
     | TOKEN_DOT
@@ -29,6 +39,8 @@ type nonTerminalId =
     | NONTERM_FullSimpleSelectorSeq
     | NONTERM_SimpleSelectorSeq
     | NONTERM_SimpleSelector
+    | NONTERM_AttributeValue
+    | NONTERM_AttributeComparison
     | NONTERM_Combinator
 /// This function maps integers indexes to symbolic token ids
 val tagOfToken: token -> int

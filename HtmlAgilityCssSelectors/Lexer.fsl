@@ -17,7 +17,7 @@ let string1 = '"'[^'\n''\r''\"']*'"'
 let string2 = '\''[^'\n''\r''\'']*'\''
 let string = string1|string2
 
-let w = [' ''\t''\r''\n']*
+let w = [' ']
 let N = ['N''n']
 let O = ['O''o']
 let T = ['T''t']
@@ -27,10 +27,15 @@ rule tokenize = parse
 | '#'					{ HASH }
 | '.' 					{ DOT }
 | '*' 					{ STAR }
-| w '+'	w				{ PLUS }
-| w '>' w				{ GREATER }
-| w ',' w				{ COMMA }
+| '['					{ LBRACKET }
+| ']'					{ RBRACKET }
+| '='					{ EQUALS }
+| '\''					{ SINGLEQOUTE }
+| w* '+'	w*			{ PLUS }
+| w* '>' w*				{ GREATER }
+| w* ',' w*				{ COMMA }
 | w+					{ S }
+| eof					{ EOF }
 
 
 //| "~="					{ INCLUDES }
