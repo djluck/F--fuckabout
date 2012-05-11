@@ -16,3 +16,11 @@ F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\bin\Debug\HtmlAgilit
 F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\obj\x86\Debug\HtmlAgilityCssSelectors.exe
 F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\obj\x86\Debug\HtmlAgilityCssSelectors.pdb
 F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\obj\x86\Debug\HtmlAgilityCssSelectors.fsprojResolveAssemblyReference.cache
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\bin\Debug\HtmlAgilityCssSelectors.XML
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\obj\x86\Debug\HtmlAgilityCssSelectors.fsprojResolveAssemblyReference.cache
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\obj\x86\Debug\HtmlAgilityCssSelectors.exe
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\obj\x86\Debug\HtmlAgilityCssSelectors.pdb
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\bin\Debug\HtmlAgilityCssSelectors.exe
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\bin\Debug\HtmlAgilityCssSelectors.pdb
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\bin\Debug\HtmlAgilityPack.pdb
+F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\bin\Debug\HtmlAgilityPack.xml

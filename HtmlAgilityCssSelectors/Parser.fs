@@ -3,13 +3,13 @@ module Parser
 #nowarn "64";; // turn off warnings that type variables used in production annotations are instantiated to concrete type
 open Microsoft.FSharp.Text.Lexing
 open Microsoft.FSharp.Text.Parsing.ParseHelpers
-# 1 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 1 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
 
 
 open Ast
 
 
-# 12 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 12 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
 // This type is the type of tokens accepted by the parser
 type token = 
   | IDENT of (System.String)
@@ -37,8 +37,12 @@ type nonTerminalId =
     | NONTERM__startstart
     | NONTERM_start
     | NONTERM_Init
+    | NONTERM_SelectorsGroup
+    | NONTERM_Selector
+    | NONTERM_FullSimpleSelectorSeq
     | NONTERM_SimpleSelectorSeq
     | NONTERM_SimpleSelector
+    | NONTERM_Combinator
 
 // This function maps tokens to integers indexes
 let tagOfToken (t:token) = 
@@ -73,12 +77,19 @@ let prodIdxToNonTerminal (prodIdx:int) =
     | 0 -> NONTERM__startstart 
     | 1 -> NONTERM_start 
     | 2 -> NONTERM_Init 
-    | 3 -> NONTERM_SimpleSelectorSeq 
-    | 4 -> NONTERM_SimpleSelectorSeq 
-    | 5 -> NONTERM_SimpleSelector 
-    | 6 -> NONTERM_SimpleSelector 
-    | 7 -> NONTERM_SimpleSelector 
-    | 8 -> NONTERM_SimpleSelector 
+    | 3 -> NONTERM_SelectorsGroup 
+    | 4 -> NONTERM_SelectorsGroup 
+    | 5 -> NONTERM_Selector 
+    | 6 -> NONTERM_Selector 
+    | 7 -> NONTERM_FullSimpleSelectorSeq 
+    | 8 -> NONTERM_SimpleSelectorSeq 
+    | 9 -> NONTERM_SimpleSelectorSeq 
+    | 10 -> NONTERM_SimpleSelector 
+    | 11 -> NONTERM_SimpleSelector 
+    | 12 -> NONTERM_SimpleSelector 
+    | 13 -> NONTERM_SimpleSelector 
+    | 14 -> NONTERM_Combinator 
+    | 15 -> NONTERM_Combinator 
     | _ -> failwith "prodIdxToNonTerminal: bad production index"
 
 let _fsyacc_endOfInputTag = 10 
@@ -107,116 +118,194 @@ let _fsyacc_dataOfToken (t:token) =
   | GREATER  -> (null : System.Object) 
   | PLUS  -> (null : System.Object) 
   | S  -> (null : System.Object) 
-let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 1us; 65535us; 0us; 2us; 1us; 65535us; 0us; 3us; 2us; 65535us; 0us; 4us; 3us; 5us; |]
-let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 5us; 7us; |]
-let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 1us; 1us; 2us; 2us; 4us; 1us; 3us; 1us; 4us; 1us; 5us; 1us; 6us; 1us; 7us; 1us; 7us; 1us; 8us; 1us; 8us; |]
-let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 6us; 9us; 11us; 13us; 15us; 17us; 19us; 21us; 23us; |]
-let _fsyacc_action_rows = 12
-let _fsyacc_actionTableElements = [|4us; 32768us; 0us; 7us; 1us; 6us; 2us; 10us; 3us; 8us; 0us; 49152us; 0us; 16385us; 4us; 16386us; 0us; 7us; 1us; 6us; 2us; 10us; 3us; 8us; 0us; 16387us; 0us; 16388us; 0us; 16389us; 0us; 16390us; 1us; 32768us; 0us; 9us; 0us; 16391us; 1us; 32768us; 0us; 11us; 0us; 16392us; |]
-let _fsyacc_actionTableRowOffsets = [|0us; 5us; 6us; 7us; 12us; 13us; 14us; 15us; 16us; 18us; 19us; 21us; |]
-let _fsyacc_reductionSymbolCounts = [|1us; 1us; 1us; 1us; 2us; 1us; 1us; 2us; 2us; |]
-let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 3us; 3us; 4us; 4us; 4us; 4us; |]
-let _fsyacc_immediateActions = [|65535us; 49152us; 16385us; 65535us; 16387us; 16388us; 16389us; 16390us; 65535us; 16391us; 65535us; 16392us; |]
+let _fsyacc_gotos = [| 0us; 65535us; 1us; 65535us; 0us; 1us; 1us; 65535us; 0us; 2us; 1us; 65535us; 0us; 3us; 3us; 65535us; 0us; 4us; 5us; 6us; 8us; 9us; 3us; 65535us; 0us; 7us; 5us; 7us; 8us; 7us; 3us; 65535us; 0us; 10us; 5us; 10us; 8us; 10us; 4us; 65535us; 0us; 11us; 5us; 11us; 8us; 11us; 10us; 12us; 1us; 65535us; 7us; 8us; |]
+let _fsyacc_sparseGotoTableRowOffsets = [|0us; 1us; 3us; 5us; 7us; 11us; 15us; 19us; 24us; |]
+let _fsyacc_stateToProdIdxsTableElements = [| 1us; 0us; 1us; 0us; 1us; 1us; 2us; 2us; 4us; 1us; 3us; 1us; 4us; 1us; 4us; 2us; 5us; 6us; 1us; 6us; 1us; 6us; 2us; 7us; 9us; 1us; 8us; 1us; 9us; 1us; 10us; 1us; 11us; 1us; 12us; 1us; 12us; 1us; 13us; 1us; 13us; 1us; 14us; 1us; 15us; |]
+let _fsyacc_stateToProdIdxsTableRowOffsets = [|0us; 2us; 4us; 6us; 9us; 11us; 13us; 15us; 18us; 20us; 22us; 25us; 27us; 29us; 31us; 33us; 35us; 37us; 39us; 41us; 43us; |]
+let _fsyacc_action_rows = 21
+let _fsyacc_actionTableElements = [|4us; 32768us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 49152us; 0us; 16385us; 1us; 16386us; 4us; 5us; 0us; 16387us; 4us; 32768us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 16388us; 2us; 16389us; 5us; 19us; 7us; 20us; 4us; 32768us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 16390us; 4us; 16391us; 0us; 14us; 1us; 13us; 2us; 17us; 3us; 15us; 0us; 16392us; 0us; 16393us; 0us; 16394us; 0us; 16395us; 1us; 32768us; 0us; 16us; 0us; 16396us; 1us; 32768us; 0us; 18us; 0us; 16397us; 0us; 16398us; 0us; 16399us; |]
+let _fsyacc_actionTableRowOffsets = [|0us; 5us; 6us; 7us; 9us; 10us; 15us; 16us; 19us; 24us; 25us; 30us; 31us; 32us; 33us; 34us; 36us; 37us; 39us; 40us; 41us; |]
+let _fsyacc_reductionSymbolCounts = [|1us; 1us; 1us; 1us; 3us; 1us; 3us; 1us; 1us; 2us; 1us; 1us; 2us; 2us; 1us; 1us; |]
+let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 3us; 3us; 4us; 4us; 5us; 6us; 6us; 7us; 7us; 7us; 7us; 8us; 8us; |]
+let _fsyacc_immediateActions = [|65535us; 49152us; 16385us; 65535us; 16387us; 65535us; 16388us; 65535us; 65535us; 16390us; 65535us; 16392us; 16393us; 16394us; 16395us; 65535us; 16396us; 65535us; 16397us; 16398us; 16399us; |]
 let _fsyacc_reductions ()  =    [| 
-# 121 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 132 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data :  Ast.simpleSelectorSeq )) in
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data :  Ast.selectorsGroup )) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
                       raise (Microsoft.FSharp.Text.Parsing.Accept(Microsoft.FSharp.Core.Operators.box _1))
                    )
                  : '_startstart));
-# 130 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 141 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Init)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 46 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 46 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                           _1 
                    )
-# 46 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
-                 :  Ast.simpleSelectorSeq ));
-# 141 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 46 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 :  Ast.selectorsGroup ));
+# 152 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SelectorsGroup)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 48 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                Ast.SelectorsGroup (List.rev _1) 
+                   )
+# 48 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'Init));
+# 163 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'Selector)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 52 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                         [_1] 
+                   )
+# 52 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'SelectorsGroup));
+# 174 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SelectorsGroup)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Selector)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                         _3 :: _1 
+                   )
+# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'SelectorsGroup));
+# 186 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'FullSimpleSelectorSeq)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 56 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                        Ast.Selector _1 
+                   )
+# 56 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'Selector));
+# 197 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'FullSimpleSelectorSeq)) in
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'Combinator)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'Selector)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 57 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                                       Ast.SelectorSequence (_1, _2, _3) 
+                   )
+# 57 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'Selector));
+# 210 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelectorSeq)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 48 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
-                                                   Ast.SimpleSelectorSeq _1 
+# 59 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                                Ast.SimpleSelectorSeq (List.rev _1) 
                    )
-# 48 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
-                 : 'Init));
-# 152 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 59 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'FullSimpleSelectorSeq));
+# 221 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelector)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 52 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
-                                          [_1] 
+# 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                              [_1] 
                    )
-# 52 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelectorSeq));
-# 163 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 232 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelectorSeq)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'SimpleSelector)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 53 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
-                                                           _2 :: _1 
+# 63 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                                            _2 :: _1 
                    )
-# 53 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 63 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelectorSeq));
-# 175 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 244 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 56 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 66 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                   Ast.Global 
                    )
-# 56 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 66 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 185 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 254 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 57 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 67 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                    Ast.Tag(_1) 
                    )
-# 57 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 67 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 196 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 265 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 58 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                       Ast.Class(_2) 
                    )
-# 58 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
-# 207 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 276 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : System.String)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 59 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 69 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                                       Ast.Id(_2) 
                    )
-# 59 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fsy"
+# 69 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'SimpleSelector));
+# 287 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 72 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                    Ast.Child 
+                   )
+# 72 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'Combinator));
+# 297 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                                Ast.Descendant 
+                   )
+# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
+                 : 'Combinator));
 |]
-# 219 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Parser.fs"
+# 308 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 
   { reductions= _fsyacc_reductions ();
     endOfInputTag = _fsyacc_endOfInputTag;
@@ -238,5 +327,5 @@ let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> =
     numTerminals = 11;
     productionToNonTerminalTable = _fsyacc_productionToNonTerminalTable  }
 let engine lexer lexbuf startState = (tables ()).Interpret(lexer, lexbuf, startState)
-let start lexer lexbuf :  Ast.simpleSelectorSeq  =
+let start lexer lexbuf :  Ast.selectorsGroup  =
     Microsoft.FSharp.Core.Operators.unbox ((tables ()).Interpret(lexer, lexbuf, 0))

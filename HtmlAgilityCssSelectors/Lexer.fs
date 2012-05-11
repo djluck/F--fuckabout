@@ -1,4 +1,4 @@
-# 1 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 1 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
  
 module Lexer
 open System
@@ -7,7 +7,7 @@ open Microsoft.FSharp.Text.Lexing
 
 let lexeme = LexBuffer<_>.LexemeString
 
-# 10 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 10 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
 let trans : uint16[] array = 
     [| 
     (* State 0 *)
@@ -48,47 +48,47 @@ and tokenize  (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_toke
 and _fslex_tokenize  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 26 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 26 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                              IDENT (Convert.ToString(lexeme lexbuf)) 
-# 53 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 53 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 1 -> ( 
-# 27 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 27 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                            HASH 
-# 58 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 58 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 2 -> ( 
-# 28 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 28 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                             DOT 
-# 63 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 63 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 3 -> ( 
-# 29 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 29 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                             STAR 
-# 68 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 68 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 4 -> ( 
-# 30 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 30 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                               PLUS 
-# 73 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 73 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 5 -> ( 
-# 31 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 31 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                               GREATER 
-# 78 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 78 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 6 -> ( 
-# 32 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 32 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                               COMMA 
-# 83 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 83 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | 7 -> ( 
-# 33 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 33 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
                           S 
-# 88 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 88 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"
           )
   | _ -> failwith "tokenize"
 
-# 45 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fsl"
+# 45 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fsl"
 
-# 3000000 "F:\Workspace\HtmlAgilityCssSelector\HtmlAgilityCssSelectors\Lexer.fs"
+# 3000000 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Lexer.fs"

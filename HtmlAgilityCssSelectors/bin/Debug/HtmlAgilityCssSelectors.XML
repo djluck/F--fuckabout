@@ -203,6 +203,18 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="M:Parser.prodIdxToNonTerminal(System.Int32)">
 <summary>
  This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
@@ -215,6 +227,9 @@
 
 </member>
 <member name="T:Parser">
+
+</member>
+<member name="">
 
 </member>
 <member name="">

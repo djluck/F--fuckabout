@@ -36,7 +36,7 @@ open Ast
 
 // This is the type of the data produced by a successful reduction of the 'start'
 // symbol:
-%type < Ast.simpleSelectorSeq > start
+%type < Ast.selectorsGroup > start
 
 %%
 
@@ -45,14 +45,18 @@ open Ast
 // produce data using F# data construction terms.
 start: Init								{ $1 }
 
+Init: SelectorsGroup					{ Ast.SelectorsGroup (List.rev $1) }
 
 
-Init: SimpleSelectorSeq					{ Ast.SimpleSelectorSeq (List.rev $1) }
+SelectorsGroup:
+	| Selector							{ [$1] }
+	| SelectorsGroup COMMA Selector		{ $3 :: $1 }
 
-//TODO!
 Selector:
-	| SimpleSelectorSeq							{ Ast.Selector $1 }
-	| Selector Combinator SimpleSelectorSeq		{ Ast.SelectorSequence $1 $2 $3 }
+	| FullSimpleSelectorSeq									{ Ast.Selector $1 }
+	| FullSimpleSelectorSeq Combinator Selector				{ Ast.SelectorSequence ($1, $2, $3) }
+
+FullSimpleSelectorSeq: SimpleSelectorSeq	{ Ast.SimpleSelectorSeq (List.rev $1) }
 
 SimpleSelectorSeq:		
 	| SimpleSelector						{ [$1] }

@@ -65,7 +65,7 @@
     <PostBuildEvent />
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>fsyacc "$(ProjectDir)Parser.fsy"  --module Parser
+    <PreBuildEvent>fsyacc "$(ProjectDir)Parser.fsy"  --module Parser -v
 fslex "$(ProjectDir)Lexer.fsl" --unicode</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

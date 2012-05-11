@@ -24,8 +24,12 @@ type nonTerminalId =
     | NONTERM__startstart
     | NONTERM_start
     | NONTERM_Init
+    | NONTERM_SelectorsGroup
+    | NONTERM_Selector
+    | NONTERM_FullSimpleSelectorSeq
     | NONTERM_SimpleSelectorSeq
     | NONTERM_SimpleSelector
+    | NONTERM_Combinator
 /// This function maps integers indexes to symbolic token ids
 val tagOfToken: token -> int
 
@@ -37,4 +41,4 @@ val prodIdxToNonTerminal: int -> nonTerminalId
 
 /// This function gets the name of a token as a string
 val token_to_string: token -> string
-val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> ( Ast.simpleSelectorSeq ) 
+val start : (Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> token) -> Microsoft.FSharp.Text.Lexing.LexBuffer<'cty> -> ( Ast.selectorsGroup ) 

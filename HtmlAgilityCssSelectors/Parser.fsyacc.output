@@ -1,0 +1,446 @@
+Output file describing compiled parser placed in F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fs and F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsi
+------------------------
+states = 
+state 0:
+  items:
+    _startstart ->  . start
+
+  actions:
+    action 'IDENT' (noprec):   shift 14
+    action 'STAR' (noprec):   shift 13
+    action 'HASH' (noprec):   shift 17
+    action 'DOT' (noprec):   shift 15
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+    goto start: 1
+    goto Init: 2
+    goto SelectorsGroup: 3
+    goto Selector: 4
+    goto FullSimpleSelectorSeq: 7
+    goto SimpleSelectorSeq: 10
+    goto SimpleSelector: 11
+
+state 1:
+  items:
+    _startstart -> start . 
+
+  actions:
+    action 'IDENT' (noprec):   accept
+    action 'STAR' (noprec):   accept
+    action 'HASH' (noprec):   accept
+    action 'DOT' (noprec):   accept
+    action 'COMMA' (noprec):   accept
+    action 'GREATER' (noprec):   accept
+    action 'PLUS' (noprec):   accept
+    action 'S' (noprec):   accept
+    action 'error' (noprec):   accept
+    action '#' (noprec):   accept
+    action '$$' (noprec):   accept
+
+  immediate action:   accept
+ gotos:
+
+state 2:
+  items:
+    start -> Init . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce start --> Init
+    action 'STAR' (noprec):   reduce start --> Init
+    action 'HASH' (noprec):   reduce start --> Init
+    action 'DOT' (noprec):   reduce start --> Init
+    action 'COMMA' (noprec):   reduce start --> Init
+    action 'GREATER' (noprec):   reduce start --> Init
+    action 'PLUS' (noprec):   reduce start --> Init
+    action 'S' (noprec):   reduce start --> Init
+    action 'error' (noprec):   reduce start --> Init
+    action '#' (noprec):   reduce start --> Init
+    action '$$' (noprec):   reduce start --> Init
+
+  immediate action:   reduce start --> Init
+ gotos:
+
+state 3:
+  items:
+    Init -> SelectorsGroup . 
+    SelectorsGroup -> SelectorsGroup . 'COMMA' Selector
+
+  actions:
+    action 'IDENT' (noprec):   reduce Init --> SelectorsGroup
+    action 'STAR' (noprec):   reduce Init --> SelectorsGroup
+    action 'HASH' (noprec):   reduce Init --> SelectorsGroup
+    action 'DOT' (noprec):   reduce Init --> SelectorsGroup
+    action 'COMMA' (noprec):   shift 5
+    action 'GREATER' (noprec):   reduce Init --> SelectorsGroup
+    action 'PLUS' (noprec):   reduce Init --> SelectorsGroup
+    action 'S' (noprec):   reduce Init --> SelectorsGroup
+    action 'error' (noprec):   reduce Init --> SelectorsGroup
+    action '#' (noprec):   reduce Init --> SelectorsGroup
+    action '$$' (noprec):   reduce Init --> SelectorsGroup
+
+  immediate action: <none>
+ gotos:
+
+state 4:
+  items:
+    SelectorsGroup -> Selector . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SelectorsGroup --> Selector
+    action 'STAR' (noprec):   reduce SelectorsGroup --> Selector
+    action 'HASH' (noprec):   reduce SelectorsGroup --> Selector
+    action 'DOT' (noprec):   reduce SelectorsGroup --> Selector
+    action 'COMMA' (noprec):   reduce SelectorsGroup --> Selector
+    action 'GREATER' (noprec):   reduce SelectorsGroup --> Selector
+    action 'PLUS' (noprec):   reduce SelectorsGroup --> Selector
+    action 'S' (noprec):   reduce SelectorsGroup --> Selector
+    action 'error' (noprec):   reduce SelectorsGroup --> Selector
+    action '#' (noprec):   reduce SelectorsGroup --> Selector
+    action '$$' (noprec):   reduce SelectorsGroup --> Selector
+
+  immediate action:   reduce SelectorsGroup --> Selector
+ gotos:
+
+state 5:
+  items:
+    SelectorsGroup -> SelectorsGroup 'COMMA' . Selector
+
+  actions:
+    action 'IDENT' (noprec):   shift 14
+    action 'STAR' (noprec):   shift 13
+    action 'HASH' (noprec):   shift 17
+    action 'DOT' (noprec):   shift 15
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+    goto Selector: 6
+    goto FullSimpleSelectorSeq: 7
+    goto SimpleSelectorSeq: 10
+    goto SimpleSelector: 11
+
+state 6:
+  items:
+    SelectorsGroup -> SelectorsGroup 'COMMA' Selector . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'STAR' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'HASH' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'DOT' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'COMMA' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'GREATER' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'PLUS' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'S' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action 'error' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action '#' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+    action '$$' (noprec):   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+
+  immediate action:   reduce SelectorsGroup --> SelectorsGroup 'COMMA' Selector
+ gotos:
+
+state 7:
+  items:
+    Selector -> FullSimpleSelectorSeq . 
+    Selector -> FullSimpleSelectorSeq . Combinator Selector
+
+  actions:
+    action 'IDENT' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'STAR' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'HASH' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'DOT' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'COMMA' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'GREATER' (noprec):   shift 19
+    action 'PLUS' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action 'S' (noprec):   shift 20
+    action 'error' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action '#' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+    action '$$' (noprec):   reduce Selector --> FullSimpleSelectorSeq
+
+  immediate action: <none>
+ gotos:
+    goto Combinator: 8
+
+state 8:
+  items:
+    Selector -> FullSimpleSelectorSeq Combinator . Selector
+
+  actions:
+    action 'IDENT' (noprec):   shift 14
+    action 'STAR' (noprec):   shift 13
+    action 'HASH' (noprec):   shift 17
+    action 'DOT' (noprec):   shift 15
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+    goto Selector: 9
+    goto FullSimpleSelectorSeq: 7
+    goto SimpleSelectorSeq: 10
+    goto SimpleSelector: 11
+
+state 9:
+  items:
+    Selector -> FullSimpleSelectorSeq Combinator Selector . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'STAR' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'HASH' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'DOT' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'COMMA' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'GREATER' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'PLUS' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'S' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action 'error' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action '#' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+    action '$$' (noprec):   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+
+  immediate action:   reduce Selector --> FullSimpleSelectorSeq Combinator Selector
+ gotos:
+
+state 10:
+  items:
+    FullSimpleSelectorSeq -> SimpleSelectorSeq . 
+    SimpleSelectorSeq -> SimpleSelectorSeq . SimpleSelector
+
+  actions:
+    action 'IDENT' (noprec):   shift 14
+    action 'STAR' (noprec):   shift 13
+    action 'HASH' (noprec):   shift 17
+    action 'DOT' (noprec):   shift 15
+    action 'COMMA' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'GREATER' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'PLUS' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'S' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action 'error' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action '#' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+    action '$$' (noprec):   reduce FullSimpleSelectorSeq --> SimpleSelectorSeq
+
+  immediate action: <none>
+ gotos:
+    goto SimpleSelector: 12
+
+state 11:
+  items:
+    SimpleSelectorSeq -> SimpleSelector . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'STAR' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'HASH' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'DOT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'COMMA' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'GREATER' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'PLUS' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'S' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action 'error' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action '#' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+    action '$$' (noprec):   reduce SimpleSelectorSeq --> SimpleSelector
+
+  immediate action:   reduce SimpleSelectorSeq --> SimpleSelector
+ gotos:
+
+state 12:
+  items:
+    SimpleSelectorSeq -> SimpleSelectorSeq SimpleSelector . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'STAR' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'HASH' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'DOT' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'COMMA' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'GREATER' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'PLUS' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'S' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action 'error' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action '#' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+    action '$$' (noprec):   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+
+  immediate action:   reduce SimpleSelectorSeq --> SimpleSelectorSeq SimpleSelector
+ gotos:
+
+state 13:
+  items:
+    SimpleSelector -> 'STAR' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'STAR' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'HASH' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'DOT' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'COMMA' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'GREATER' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'PLUS' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'S' (noprec):   reduce SimpleSelector --> 'STAR'
+    action 'error' (noprec):   reduce SimpleSelector --> 'STAR'
+    action '#' (noprec):   reduce SimpleSelector --> 'STAR'
+    action '$$' (noprec):   reduce SimpleSelector --> 'STAR'
+
+  immediate action:   reduce SimpleSelector --> 'STAR'
+ gotos:
+
+state 14:
+  items:
+    SimpleSelector -> 'IDENT' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'STAR' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'HASH' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'DOT' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'COMMA' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'GREATER' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'PLUS' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'S' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action 'error' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action '#' (noprec):   reduce SimpleSelector --> 'IDENT'
+    action '$$' (noprec):   reduce SimpleSelector --> 'IDENT'
+
+  immediate action:   reduce SimpleSelector --> 'IDENT'
+ gotos:
+
+state 15:
+  items:
+    SimpleSelector -> 'DOT' . 'IDENT'
+
+  actions:
+    action 'IDENT' (noprec):   shift 16
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+
+state 16:
+  items:
+    SimpleSelector -> 'DOT' 'IDENT' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'STAR' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'HASH' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'DOT' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'COMMA' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'GREATER' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'PLUS' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'S' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action 'error' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action '#' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+    action '$$' (noprec):   reduce SimpleSelector --> 'DOT' 'IDENT'
+
+  immediate action:   reduce SimpleSelector --> 'DOT' 'IDENT'
+ gotos:
+
+state 17:
+  items:
+    SimpleSelector -> 'HASH' . 'IDENT'
+
+  actions:
+    action 'IDENT' (noprec):   shift 18
+    action 'STAR' (noprec):   error
+    action 'HASH' (noprec):   error
+    action 'DOT' (noprec):   error
+    action 'COMMA' (noprec):   error
+    action 'GREATER' (noprec):   error
+    action 'PLUS' (noprec):   error
+    action 'S' (noprec):   error
+    action 'error' (noprec):   error
+    action '#' (noprec):   error
+    action '$$' (noprec):   error
+
+  immediate action: <none>
+ gotos:
+
+state 18:
+  items:
+    SimpleSelector -> 'HASH' 'IDENT' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'STAR' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'HASH' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'DOT' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'COMMA' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'GREATER' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'PLUS' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'S' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action 'error' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action '#' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+    action '$$' (noprec):   reduce SimpleSelector --> 'HASH' 'IDENT'
+
+  immediate action:   reduce SimpleSelector --> 'HASH' 'IDENT'
+ gotos:
+
+state 19:
+  items:
+    Combinator -> 'GREATER' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce Combinator --> 'GREATER'
+    action 'STAR' (noprec):   reduce Combinator --> 'GREATER'
+    action 'HASH' (noprec):   reduce Combinator --> 'GREATER'
+    action 'DOT' (noprec):   reduce Combinator --> 'GREATER'
+    action 'COMMA' (noprec):   reduce Combinator --> 'GREATER'
+    action 'GREATER' (noprec):   reduce Combinator --> 'GREATER'
+    action 'PLUS' (noprec):   reduce Combinator --> 'GREATER'
+    action 'S' (noprec):   reduce Combinator --> 'GREATER'
+    action 'error' (noprec):   reduce Combinator --> 'GREATER'
+    action '#' (noprec):   reduce Combinator --> 'GREATER'
+    action '$$' (noprec):   reduce Combinator --> 'GREATER'
+
+  immediate action:   reduce Combinator --> 'GREATER'
+ gotos:
+
+state 20:
+  items:
+    Combinator -> 'S' . 
+
+  actions:
+    action 'IDENT' (noprec):   reduce Combinator --> 'S'
+    action 'STAR' (noprec):   reduce Combinator --> 'S'
+    action 'HASH' (noprec):   reduce Combinator --> 'S'
+    action 'DOT' (noprec):   reduce Combinator --> 'S'
+    action 'COMMA' (noprec):   reduce Combinator --> 'S'
+    action 'GREATER' (noprec):   reduce Combinator --> 'S'
+    action 'PLUS' (noprec):   reduce Combinator --> 'S'
+    action 'S' (noprec):   reduce Combinator --> 'S'
+    action 'error' (noprec):   reduce Combinator --> 'S'
+    action '#' (noprec):   reduce Combinator --> 'S'
+    action '$$' (noprec):   reduce Combinator --> 'S'
+
+  immediate action:   reduce Combinator --> 'S'
+ gotos:
+
+
+startStates = 0
+------------------------
