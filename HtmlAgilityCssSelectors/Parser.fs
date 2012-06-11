@@ -240,7 +240,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
-                                                                       Ast.SelectorSequence (_1, _2, _3) 
+                                                                       Ast.CombinedSelectors (_1, _2, _3) 
                    )
 # 62 "F:\Workspace\F#Fuckabout\HtmlAgilityCssSelectors\Parser.fsy"
                  : 'Selector));

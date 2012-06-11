@@ -60,7 +60,7 @@ type simpleSelectorSeq =
 
 type selector = 
     | Selector of simpleSelectorSeq
-    | SelectorSequence of simpleSelectorSeq * combinator * selector
+    | CombinedSelectors of simpleSelectorSeq * combinator * selector
 
 type selectorsGroup =
     | SelectorsGroup of selector list

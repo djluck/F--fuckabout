@@ -43,10 +43,12 @@
     <Compile Include="Ast.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="Lexer.fs" />
+    <Compile Include="HtmlAgilityExtensions.fs" />
     <Compile Include="Program.fs" />
     <None Include="packages.config" />
     <None Include="Lexer.fsl" />
     <None Include="Parser.fsy" />
+    <Compile Include="Eval.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -60,12 +62,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent />
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>fsyacc "$(ProjectDir)Parser.fsy"  --module Parser -v
+    <PreBuildEvent>fsyacc "$(ProjectDir)Parser.fsy"  --module Parser
 fslex "$(ProjectDir)Lexer.fsl" --unicode</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

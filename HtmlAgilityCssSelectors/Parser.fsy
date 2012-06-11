@@ -59,7 +59,7 @@ SelectorsGroup:
 
 Selector:
 	| FullSimpleSelectorSeq									{ Ast.Selector $1 }
-	| FullSimpleSelectorSeq Combinator Selector				{ Ast.SelectorSequence ($1, $2, $3) }
+	| FullSimpleSelectorSeq Combinator Selector				{ Ast.CombinedSelectors ($1, $2, $3) }
 
 FullSimpleSelectorSeq: SimpleSelectorSeq	{ Ast.SimpleSelectorSeq (List.rev $1) }
 
