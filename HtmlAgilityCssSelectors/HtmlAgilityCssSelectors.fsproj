@@ -49,6 +49,7 @@
     <None Include="Lexer.fsl" />
     <None Include="Parser.fsy" />
     <Compile Include="Eval.fs" />
+    <Compile Include="Util.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

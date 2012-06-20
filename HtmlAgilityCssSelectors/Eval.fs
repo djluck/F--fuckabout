@@ -2,6 +2,8 @@
 open HtmlAgilityPack
 open System.Text.RegularExpressions
 open Ast
+open Util
+
 
 let matchStr (s1:string) (s2:string) =
     s1.ToLower() = s2.ToString().ToLower()
@@ -35,21 +37,6 @@ let attrContains compareTo (attrValue:string) =
 let hasClass className node =
     matchAttribute "class" (attrContains className) node
 
-//TODO- rewrite using seq expression
-let findSiblings (start:HtmlNode) =
-    let rec findSiblingsInDir nextSiblingFun (node:HtmlNode) =
-        match (nextSiblingFun node) with
-        | null -> []
-        | nextSibling -> node :: findSiblingsInDir nextSiblingFun nextSibling
-
-    start 
-        :: findSiblingsInDir (fun x-> x.NextSibling) start 
-        @ findSiblingsInDir (fun x-> x.PreviousSibling) start
-        |> List.toSeq
-
-
-
-
 let evalAttrComparison value = function
     | Equals -> matchStr value
     | Similar -> attrContains value
@@ -63,22 +50,37 @@ let evalSimpleSelector = function
     | AttributeComparsion(attrName, comparison, value) ->
         filterNode (matchAttribute attrName (evalAttrComparison value comparison))
 
-let evalSimpleSelectorSeq = function
+let evalSimpleSelectorSeq simpleSelSeq (node:HtmlNode) = 
+    match simpleSelSeq with
     | SimpleSelectorSeq(selectors) -> 
-        selectors 
-        |> List.map evalSimpleSelector
-        |> List.reduce (fun acc x-> acc >> x)
+        let filterNodeFun = 
+            selectors 
+            |> List.map evalSimpleSelector
+            |> List.reduce (fun acc x-> acc >> x)
 
-let evalCombinator comb =
-    let outerFn fn (node:HtmlNode option) : HtmlNode seq option = 
-        match node with
-        | Some(n) -> Some(fn n)
-        | None -> None
+        node.DescendantsAndSelf()
+        |> Seq.choose (fun x-> filterNodeFun (Some x))
 
-    match comb with
-    | Child -> outerFn (fun x-> x.ChildNodes.Elements())
-    | Descendant -> outerFn (fun x-> x.DescendantNodes())
-    | Sibling -> outerFn findSiblings
+let evalCombinator combinator (node:HtmlNode) =
+    match combinator with
+    | Child -> node.ChildNodes.Elements() |> Seq.cast
+    | Descendant -> node.DescendantNodes() |> Seq.cast
+    | Sibling -> 
+        node.ParentNode.ChildNodes.Nodes() 
+        |> Seq.filter (fun y-> not (y.Equals(node)))
+
+
+
+    
+
+let rec evalSelector node = function
+    | CombinedSelectors (s1, comb, s2) -> 
+        evalSimpleSelectorSeq s1 node
+        |> Seq.map (fun x -> set (evalCombinator comb x |> Seq.map (fun x-> RefEquality(x) )))
+        |> Set.intersectMany
+        |> Set.toSeq
+        |> Seq.map (fun x-> x.Item)
+    | Selector(s) -> evalSimpleSelectorSeq s node
 
 
 let evalSelectorsGroup sg (node:HtmlNode) =
